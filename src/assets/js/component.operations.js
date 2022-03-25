@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 function deleteLink(id) {
-    axios.delete('http://localhost/delete/' + id)
+    axios.delete('http://localhost/api/command/delete/' + id)
         .then(() => console.log('Delete is succeeded'));
 }
 
@@ -9,7 +9,7 @@ function createLink(link) {
     console.log(link);
     const uuid = uuidv4();
     const reqBody = { link: link, trand: uuid };
-    axios.post('http://localhost/create', reqBody)
+    axios.post('http://localhost/api/command/create', reqBody)
         .then(response => element.innerHTML = response.data.id);
 }
 

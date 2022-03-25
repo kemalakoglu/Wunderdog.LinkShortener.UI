@@ -39,7 +39,7 @@ export class TableListComponent implements OnInit {
 
   private getData() {
 
-    this.service.get(keys.apiAddress + 'dashboard/listByPageAsync')
+    this.service.get(keys.apiAddress + 'query/listByPageAsync')
       .then((data: any) => {
         this.dataSource = JSON.parse(JSON.parse(data));
       });

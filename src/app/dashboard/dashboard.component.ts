@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
 
   private getData() {
 
-    this.service.get(keys.apiAddress + 'dashboard/getDailyLinksAsync')
+    this.service.get(keys.apiAddress + 'query/getDailyLinksAsync')
       .then((data: any) => {
         console.log(JSON.parse(JSON.parse(data)));
         this.chartData = JSON.parse(JSON.parse(data));
@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
         this.startAnimationForLineChart(dailySalesChart);
       });
 
-    this.service.get(keys.apiAddress + 'dashboard/getLastTenLinksAsync')
+    this.service.get(keys.apiAddress + 'query/getLastTenLinksAsync')
       .then((data: any) => {
         console.log(JSON.parse(JSON.parse(data)));
         this.dataSource = JSON.parse(JSON.parse(data));
