@@ -1,51 +1,60 @@
 import { Component, OnInit } from '@angular/core';
 import { APIService } from '../../custom-components/http-service/service';
 import { keys } from "../../constants/keys";
-
+import * as _ from 'lodash';
+declare function deleteLink(id): any;
+declare function createLink(link): any;
 @Component({
   selector: 'app-table-list',
   templateUrl: './table-list.component.html',
   styleUrls: ['./table-list.component.css']
 })
 export class TableListComponent implements OnInit {
-  displayedColumns: string[] = ['longUrl', 'link', 'createdAt'];
+  displayedColumns: string[] = ['id', 'longUrl', 'link', 'createdAt'];
 
-  dataSource = [
-    {  _id: "623a1f9db1e4c547c407f158",  longUrl: 'https://github.com/kemalakoglu',  link: 'https://bit.ly/3inHd0a',  createdAt: "2022-03-21T21:58:57.000Z",  __v: 0},
-    {  _id: "623a1f9db1e4c547c407f15a",  longUrl: 'https://github.com/kemalakoglu',  link: 'https://bit.ly/3inHd0a',  createdAt: "2022-03-21T21:58:57.000Z",  __v: 0},
-    {  _id: "623a1f9fb1e4c547c407f15f",  longUrl: 'https://github.com/kemalakoglu',  link: 'https://bit.ly/3inHd0a',  createdAt: "2022-03-21T21:58:57.000Z",  __v: 0},
-    {  _id: "623a2012086dd117aaa71ee0",  longUrl: 'https://github.com/kemalakoglu',  link: 'https://bit.ly/3inHd0a',  createdAt: "2022-03-21T21:58:57.000Z",  __v: 0},
-    {  _id: "623a1f9db1e4c547c407f158",  longUrl: 'https://github.com/kemalakoglu',  link: 'https://bit.ly/3inHd0a',  createdAt: "2022-03-21T21:58:57.000Z",  __v: 0},
-    {  _id: "623a1f9db1e4c547c407f15a",  longUrl: 'https://github.com/kemalakoglu',  link: 'https://bit.ly/3inHd0a',  createdAt: "2022-03-21T21:58:57.000Z",  __v: 0},
-    {  _id: "623a1f9fb1e4c547c407f15f",  longUrl: 'https://github.com/kemalakoglu',  link: 'https://bit.ly/3inHd0a',  createdAt: "2022-03-21T21:58:57.000Z",  __v: 0},
-    {  _id: "623a2012086dd117aaa71ee0",  longUrl: 'https://github.com/kemalakoglu',  link: 'https://bit.ly/3inHd0a',  createdAt: "2022-03-21T21:58:57.000Z",  __v: 0}
-  ];
+  dataSource = [];
   clickedRows = new Set<Link>();
-
+  linkValue = "Please Insert Link";
 
   constructor(private service: APIService) {
     this.getData();
   }
 
   ngOnInit() {
-    this.getData();
+  }
+
+  createInsertedLink() {
+    createLink(this.linkValue);
+  }
+
+  deleteSelected() {
+    console.log(this.clickedRows);
+    if (this.clickedRows.size > 0) {
+      this.clickedRows.forEach(function (value) {
+        console.log(_.get(value, 'id'));
+        deleteLink(_.get(value, 'id'));
+      });
+    }
   }
 
   private getData() {
-    
+
     this.service.get(keys.apiAddress + 'dashboard/listByPageAsync')
       .then((data: any) => {
-        console.log(data);
-        console.log(JSON.parse(data));
-        this.dataSource = JSON.parse(data);
-        console.log(this.dataSource);
+        this.dataSource = JSON.parse(JSON.parse(data));
       });
   }
 }
 
-export interface Link {
-  _id: string,
-  longUrl: string,
-  link: string,
-  createdAt: string,
+export class Link {
+  constructor(id, longUrl, link, createdAt) {
+    this.id = id;
+    this.longUrl = longUrl;
+    this.link = link;
+    this.createdAt = createdAt;
+  }
+  public id: string;
+  public longUrl: string;
+  public link: string;
+  public createdAt: string;
 }

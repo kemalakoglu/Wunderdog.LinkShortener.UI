@@ -23,6 +23,14 @@ export class APIService implements OnInit {
       data);
   }
 
+  delete(url) {
+    return this.http.delete(url, {responseType: 'text'}).pipe(
+      retry(3), // retry a failed request up to 3 times
+      catchError(this.handleError),
+    ).toPromise().then((data: any) =>
+      data);
+  }
+
   getWithToken(url) {
     return this.http.get(url, {
       headers: new HttpHeaders({
